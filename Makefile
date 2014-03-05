@@ -50,7 +50,7 @@ getpower : $(GET_POWER_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(GET_POWER_OBJ) $(CC_LDFLAGS)
 
 getgen : $(GET_GEN_OBJ)
-        $(CC) $(CFLAGS) -o $@ $(GET_GEN_OBJ) $(CC_LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(GET_GEN_OBJ) $(CC_LDFLAGS)
 
 install:
 	mkdir -p $(bindir)
