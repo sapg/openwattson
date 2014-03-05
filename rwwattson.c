@@ -117,7 +117,7 @@ int get_current_power(WATTSON wattson)
  * Returns: Current generated power
  *
  ********************************************************************/
-int get_current_power(WATTSON wattson)
+int get_current_generated_power(WATTSON wattson)
 {
         char cmd[] = "noww";
         //char cmd[] = "nowA00009 00\n";
@@ -135,7 +135,7 @@ int get_current_power(WATTSON wattson)
         if (readport(wattson, genresult) <= 0)
                 return(-2);
         if ( genresult[0] == 'p' ) {
-                sscanf(result+1, "%x", &genpower);
+                sscanf(genresult+1, "%x", &genpower);
         }
         else {
                 return(-3); // Error in power value
