@@ -51,7 +51,9 @@ struct timestamp
 
 /* Wattson read functions */
 int get_current_power_with_retry(WATTSON wattson);
+int get_current_generated_power_with_retry(WATTSON wattson);
 int get_current_power(WATTSON wattson);
+int get_current_generated_power(WATTSON wattson);
 
 
 /* Generic functions */

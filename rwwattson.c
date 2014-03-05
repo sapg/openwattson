@@ -40,6 +40,35 @@ int get_current_power_with_retry(WATTSON wattson)
 }
 
 /********************************************************************/
+/* get_current_generated_power_with_retry
+ * Return current generated power reading. Retry a maximum of MAXRETRIES times
+ * if an error occurs. Negative value is returned in case of error, 
+ * greater than or equal to zero if successful.  
+ * 
+ * Input: Handle to Wattson
+ *
+ * Returns: Current generated power consumption
+ *
+ ********************************************************************/
+int get_current_generated_power_with_retry(WATTSON wattson)
+{
+        int genpower;
+        int i;
+
+        for ( i=0 ; i<MAXRETRIES ; i++ ) {
+                genpower = get_current_generated_power(wattson);
+                if ( genpower >= 0 )
+                        break;
+                mySleep(500000); // Give enough time for recovering
+        }
+
+        return genpower;
+}
+
+/********************************************************************/
+
+
+/********************************************************************/
 /* get_current_power
  * Return current power reading. Negative value is returned in case of error, 
  * greater than or equal to zero if successful. 
@@ -78,6 +107,43 @@ int get_current_power(WATTSON wattson)
 
 	return power;
 }
+
+/********************************************************************/
+/* get_current_generated_power
+ * Return current generated power reading. 
+ * 
+ * Input: Handle to Wattson
+ *
+ * Returns: Current generated power
+ *
+ ********************************************************************/
+int get_current_power(WATTSON wattson)
+{
+        char cmd[] = "noww";
+        //char cmd[] = "nowA00009 00\n";
+        char genresult[REPLY_BUF_SIZE];
+        unsigned int genpower = 0;
+
+        tcflush(wattson, TCIOFLUSH); // Flush everything just in case
+
+        if (writeport(wattson, cmd) <= 0)
+                return(-1);
+
+        mySleep(500000); // Give enough time for replying
+    bzero(genresult, REPLY_BUF_SIZE);  // Clear the buffer before readport
+
+        if (readport(wattson, genresult) <= 0)
+                return(-2);
+        if ( genresult[0] == 'p' ) {
+                sscanf(result+1, "%x", &genpower);
+        }
+        else {
+                return(-3); // Error in power value
+        }
+
+        return genpower;
+}
+
 
 /********************************************************************
  * get_configuration()
