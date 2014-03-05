@@ -23,6 +23,7 @@ OBJ = linuxwattson.o rwwattson.o
 FETCH_OBJ = fetchwattson.o $(OBJ)
 LOG_OBJ = logwattson.o $(OBJ)
 GET_POWER_OBJ = getpower.o $(OBJ)
+GET_GEN_OBJ = getgen.o $(OBJ)
 
 VERSION = 0.1
 HTML_DIR = ../html_openwattson
@@ -37,7 +38,7 @@ INSTALL = install
 
 ####### Build rules
 
-all: fetchwattson logwattson getpower 
+all: fetchwattson logwattson getpower getgen
 	
 fetchwattson : $(FETCH_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(FETCH_OBJ) $(CC_LDFLAGS)
@@ -48,20 +49,24 @@ logwattson : $(LOG_OBJ)
 getpower : $(GET_POWER_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(GET_POWER_OBJ) $(CC_LDFLAGS)
 
+getgen : $(GET_GEN_OBJ)
+        $(CC) $(CFLAGS) -o $@ $(GET_GEN_OBJ) $(CC_LDFLAGS)
+
 install:
 	mkdir -p $(bindir)
 	$(INSTALL) fetchwattson $(bindir)
 	$(INSTALL) logwattson $(bindir)
 	$(INSTALL) getpower $(bindir)
+	$(INSTALL) getgen $(bindir)
 	
 uninstall:
-	rm -f $(bindir)/fetchwattson (bindir)/logwattson $(bindir)/getpower
+	rm -f $(bindir)/fetchwattson $(bindir)/logwattson $(bindir)/getpower $(binddir)/getgen
 
 clean:
-	rm -rf *~ *.o fetchwattson logwattson getpower
+	rm -rf *~ *.o fetchwattson logwattson getpower getgen
 
 cleanexe:
-	rm -f *~ *.o fetchwattson.exe logwattson.exe getpower.exe
+	rm -f *~ *.o fetchwattson.exe logwattson.exe getpower.exe getgen.exe
 
 tarball: clean
 	mkdir -p $(HTML_DIR)
