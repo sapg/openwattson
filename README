@@ -1,0 +1,77 @@
+openwattson
+
+version 0.1
+
+Copyright 2010 by Kary Främling, Jan Nyman
+This program is published under the GNU General Public License version 2.0
+or later. Please read the file 'COPYING' for more info.
+
+This Openwattson package is largely inspired from Kenneth Lavrsen's open2300 package for connecting to the LaCrosse Weather station. The authors hereby express their gratitude to the work done by Kenneth Lavrsen, which provided a nice initial framework. Still, large parts of the source code have been modified due to the differences in information and communication logic between the weather station and Wattson. 
+
+With openwattson you can read and write to and from a Wattson energy meter. You may in some cases be able to cause some damage to the Wattson, even though the authors have made their best to prevent such damages. In any case, the authors takes no responsibility for any damage the use of this program may cause.
+
+Installing: Read the file INSTALL.
+
+How to use the programs:
+All the programs use a config file to get information like COM port (serial device name), preferred units, etc etc.
+See the INSTALL file and the openwattson.conf-dist file for more info. Note that you should copy the open2300.conf to your preferred location. The file  openwattson.conf-dist is just included for reference in case you need to restore the initial file.
+
+getpower
+Read current power value and write to to standard out, followed by a newline. The name of this program will be changed in the future to something like 'gcpwattson' for Get Current Power Wattson. This program takes no arguments.
+
+logwattson
+Write current data to log interpreted: logwattson filename config_filename
+This is very suitable for a cron job since it makes no output to screen.
+If no config_filename is given the program will search for it using the
+default search sequence - see the openwattson.conf-dist file.
+
+fetchwattson
+Write current data to standard out: fetchwattson config_filename
+It takes one parameter which is the config file name with path.
+If this parameter is omitted the program will look at the default paths.
+See the openwattson.conf-dist file for info.
+
+Utility tools in the 'utils' directory:
+
+runlogwattson.sh
+Shell script that runs an eternal loop with 'logwattson', then sleeping. 
+The default sleeping time is 5 seconds. If you want this program to be 
+automatically started at system startup, then put it into the appropriate 
+directories under '/etc'. If you want to start it from a shell and keep it 
+running when you exit the shell (or log out), then use e.g.
+'nohup ./runlogwattson.sh &'. 
+
+currentWattsonAsHTML.sh
+Shell script that gets the current power reading from the Wattson energy
+meter and creates a simple HTML file for showing it. The name of the file 
+to create is given as the first command line parameter. This shell script 
+is meant to be executed e.g. once per minute, which can be done e.g. by 
+adding the line "0-59/1 * * * * root /home/kary/openwattson/utils/currentWattsonAsHTML.sh /var/www/wattson_out.html" to /etc/crontab (/var/www/wattson_out.html is 
+the output file). 
+If the name of an image file (e.g.one produced by 'wattsonplot') is given as 
+the second parameter, then that image is included in the page (if it exists). 
+
+wattsonplot.sh
+Shell script that takes 'nrows' last values from logwattson log file and 
+creates a PNG file with a date-time vs. power plot. 
+Parameters
+- Name of log file (compulsory)
+- Name of PNG file to create (compulsory)
+- Number of rows to include from the end of the file (optional; default is 5000)
+The appropriate number of rows to use depends on the sampling interval used.
+The 'ploticus' package is required for this script to work 
+# (do 'sudo apt-get ploticus' or similar if needed). 
+
+Other files:
+
+rwwattson.c / rwwattson.h
+This is the common function library.
+
+linuxwattson.c / linuxwattson.h
+This is part of the common function library and contains all the platform
+unique functions. These files contains the functions that are special for
+Linux. 
+
+
+Kary Främling (Kary.Framling@gmail.com), Jan Nyman (Jan.Nyman@iki.fi)
+

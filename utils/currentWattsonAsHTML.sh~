@@ -1,0 +1,50 @@
+#!/bin/sh
+# Shell script that gets the current power reading from the Wattson energy
+# meter and created a simple HTML file for showing it. The name of the file 
+# to create is given as the first command line parameter. 
+#
+# Author: Kary Främling, 2010
+#
+
+# Verify that we have a command line parameter; should be name of file to
+# create.
+if [ $# -lt 1 ]; then
+	echo "No output file name given"
+	exit 0
+fi
+
+# Get power value into variable
+pow=`getpower`
+
+# Write everything into file in one go
+echo "<html>
+
+<head>
+<title>Kary's Wattson energy meter, Borgå, Finland</title>
+<META HTTP-EQUIV="Expires" CONTENT="Tue, 01 Jan 1980 1:00:00 GMT">  
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">  
+<META HTTP-EQUIV="Refresh" CONTENT="60">  
+</head>
+
+<body bgcolor="honeydew" text="black" link="blue" vlink="purple" alink="red">
+
+<h1 align="center">Kary's Wattson energy meter, Borgå, Finland</h1>
+<table border="1" width="20%" align="center">
+  <tr>
+
+<td width="100%" height="70" valign="top">
+  <center>
+<b>12:35:01&nbsp;&nbsp;2010-Apr-21</b>
+<br>
+Current Power reading: 0 
+			   </center>
+</td>
+</tr>
+</table>
+<p align="center">Power readings are updated once per minute</p>
+
+</body>
+
+</html>" > $1
+
+

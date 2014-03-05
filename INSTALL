@@ -1,0 +1,38 @@
+Compilation and installation:
+
+1. There is no configure script (so no ./configure needed).
+2. make
+3. make install
+
+'make install' only copies the most important of the binaries to the
+bin directory. Edit the Makefile manually to change prefix and if needed install directory. Default is '/usr/local/bin'.
+
+If you just want the binary executable in the current directory just run
+'make' and skip the 'make install'. You can also run 'make fetchwattson' or 'make logwattson' etc to just create one executable.
+
+Setting up program parameters (e.g. serial port to use):
+
+First copy the openwattson.conf file to a location where you want the
+openwattson tools to read their configuration information. Unless you specify the pathname when invoking the programs the config file
+must be called openwattson.conf.
+
+Default locations in chronological order are 
+  1. Path to config file including filename given as parameter
+     (not supported by all tools)
+  2. ./openwttson.conf (current working directory)
+  3. /usr/local/etc/openwattson.conf (typical Linux location)
+  4. /etc/openwattson.conf (typical Linux location)
+
+Serial ports under Linux have names like /dev/ttyS1 (COM2) or /dev/ttyUSB0
+if it is the first serial port assigned to a USB device. 
+Make sure that the user that runs the binaries has both read and
+write access to this device.
+
+Example
+
+chmod 766 /dev/ttyS1
+will give access to everyone for COM2.
+
+Note: Also read the README
+
+
