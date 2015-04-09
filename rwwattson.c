@@ -52,17 +52,17 @@ int get_current_power_with_retry(WATTSON wattson)
  ********************************************************************/
 int get_current_generated_power_with_retry(WATTSON wattson)
 {
-        int genpower;
+        int power;
         int i;
 
         for ( i=0 ; i<MAXRETRIES ; i++ ) {
-                genpower = get_current_generated_power(wattson);
-                if ( genpower >= 0 )
+                power = get_current_generated_power(wattson);
+                if ( power >= 0 )
                         break;
                 mySleep(500000); // Give enough time for recovering
         }
 
-        return genpower;
+        return power;
 }
 
 /********************************************************************/
@@ -96,7 +96,7 @@ int get_current_power(WATTSON wattson)
 	mySleep(500000); // Give enough time for replying
     bzero(result, REPLY_BUF_SIZE);  // Clear the buffer before readport
 
-	if (readport(wattson, result) <= 0)
+ 	if (readport(wattson, result) <= 0)
 		return(-2);
 	if ( result[0] == 'p' ) {		
 		sscanf(result+1, "%x", &power);
@@ -121,8 +121,8 @@ int get_current_generated_power(WATTSON wattson)
 {
         char cmd[] = "noww";
         //char cmd[] = "nowA00009 00\n";
-        char genresult[REPLY_BUF_SIZE];
-        unsigned int genpower = 0;
+        char result[REPLY_BUF_SIZE];
+        unsigned int power = 0;
 
         tcflush(wattson, TCIOFLUSH); // Flush everything just in case
 
@@ -130,18 +130,18 @@ int get_current_generated_power(WATTSON wattson)
                 return(-1);
 
         mySleep(500000); // Give enough time for replying
-    bzero(genresult, REPLY_BUF_SIZE);  // Clear the buffer before readport
+    bzero(result, REPLY_BUF_SIZE);  // Clear the buffer before readport
 
-        if (readport(wattson, genresult) <= 0)
+        if (readport(wattson, result) < 0)
                 return(-2);
-        if ( genresult[0] == 'p' ) {
-                sscanf(genresult+1, "%x", &genpower);
+        if ( result[0] == 'w' ) {
+                 sscanf(result+1, "%x", &power);
         }
-        else {
+         else {
                 return(-3); // Error in power value
         }
 
-        return genpower;
+        return power;
 }
 
 

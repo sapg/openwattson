@@ -1,4 +1,4 @@
-/*  openwattson - getpower.c
+/*  openwattson - getgen.c
  *  
  *  Version 0.1
  *  
@@ -27,9 +27,10 @@ int main(int argc, char *argv[])
 
 	wattson = open_wattson(config.serial_device_name);
 
-	/* READ GENERATED CURRENT POWER */
+	/* READ GENERATED CURRENT POWER CONSUMPTION */
 	
 	current_generated_power = get_current_generated_power_with_retry(wattson);
+	/* current_generated_power = get_current_generated_power(wattson); */
 
 	// Print out followed by newline and leave
 
